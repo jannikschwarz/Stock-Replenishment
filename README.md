@@ -1,7 +1,5 @@
 # Stock-Repleneishment
-A simple Stock Replenishment Reuqest system used by in factory production line workers to request the refilling of materials at their station when running low. The request follows this lifecycle
-Draft → Submitted → Approved → Fulfilled
-                  ↘ Rejected
+A simple Stock Replenishment Reuqest system used by in factory production line workers to request the refilling of materials at their station when running low. 
 
 Tech stack: 
 - BackendAPI: ASP.Net Core (.Net 10) using controller RequestController.cs
