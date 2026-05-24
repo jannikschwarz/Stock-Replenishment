@@ -1,0 +1,97 @@
+@page "/requests"
+
+@using System.Net.Http.Json
+@using Replenishment.Blazor.Models
+@using MudBlazor
+
+@inject NavigationManager Navigation
+@inject IHttpClientFactory HttpClientFactory
+
+
+<MudText Typo="Typo.h4" Class="mb-4">
+    Requests
+</MudText>
+
+<MudTable Items="_requests">
+    <HeaderContent>
+        <MudTh>Worker</MudTh>
+        <MudTh>Location</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Priority</MudTh>
+        <MudTh>Created</MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTr Style="cursor:pointer" @onclick="@(() => OpenDetails(context.Id))">
+            <MudTd>@context.WorkerName</MudTd>
+            <MudTd>@context.StockLocation</MudTd>
+            <MudTd>@GetStatusText(context.Status)</MudTd>
+            <MudTd>@GetPriorityText(context.Priority)</MudTd>
+            <MudTd>@context.CreatedAt.ToString("yyyy-MM-dd HH:mm")</MudTd>
+        </MudTr>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    string[] headings = { "Worker", "Stock location", "Status", "Priority", "Created", "Items"};
+
+
+    private List<ReplenishmentRequestModel> _requests = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = HttpClientFactory.CreateClient("Api");
+
+        var result = await client.GetFromJsonAsync<
+            List<ReplenishmentRequestModel>>(
+                "api/requests");
+
+        if (result is not null)
+        {
+            _requests = result;
+        }
+    }
+
+    private void OpenDetails(Guid id){
+        Console.WriteLine($"Id clicked: {id}");
+        Navigation.NavigateTo($"/requests/{id}");
+    }
+
+
+    #region Data retrieval
+    private Color GetStatusColor(int status)
+    {
+        return status switch
+        {
+            0 => Color.Default,
+            1 => Color.Warning,
+            2 => Color.Success,
+            3 => Color.Error,
+            4 => Color.Info,
+            _ => Color.Default
+        };
+    }
+
+    private string GetPriorityText(int priority){
+        return priority switch{
+            0 => "Low",
+            1 => "Medium",
+            2 => "Urgent",
+            _ => "Low"
+        };
+    }
+
+    private string GetStatusText(int status){
+        return status switch
+        {
+            0 => "Draft",
+            1 => "Submitted",
+            2 => "Approved",
+            3 => "Rejected",
+            4 => "Fulfilled",
+            _ => ""
+        }; 
+    }
+    #endregion
+}
