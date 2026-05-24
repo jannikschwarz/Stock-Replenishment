@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Replenishment.Api/Replenishment.Api.csproj" />
+  <Project Path="Replenishment.Application/Replenishment.Application.csproj" />
+  <Project Path="Replenishment.Blazor/Replenishment.Blazor.csproj" />
+  <Project Path="Replenishment.Domain/Replenishment.Domain.csproj" />
+  <Project Path="Replenishment.Infrastructure/Replenishment.Infrastructure.csproj" />
+  <Project Path="Replenishment.Tests/Replenishment.Tests.csproj" />
+</Solution>
